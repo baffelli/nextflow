@@ -32,6 +32,7 @@ import groovyx.gpars.dataflow.DataflowVariable
 import groovyx.gpars.dataflow.DataflowWriteChannel
 import groovyx.gpars.dataflow.operator.ControlMessage
 import groovyx.gpars.dataflow.operator.PoisonPill
+import groovy.sql.Sql
 import nextflow.dag.NodeMarker
 import nextflow.datasource.SraExplorer
 import nextflow.exception.AbortOperationException
@@ -308,6 +309,17 @@ class Channel  {
         NodeMarker.addSourceNode('Channel.watchPath', result)
         return result
     }
+
+    /**
+    * Implements the `fromSQL` channel factory method
+    *
+    **/
+
+    static DataflowChannel fromSql(Sql dataSource, String query){
+        def result = dataSource.rows(query) 
+        NodeMarker.addSourceNode('Channel.fromSql', result)
+    }
+
 
     /**
      * Implements the `fromFilePairs` channel factory method
